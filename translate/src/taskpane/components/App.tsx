@@ -2,9 +2,12 @@ import * as React from "react";
 import { useAction } from "./hook";
 import "../taskpane.css";
 import { Select } from "antd";
+import { AppSettings } from "../../../appsettings";
 
 const App = () => {
   const { content } = useAction();
+
+  const settings = (window as any).appsettings as AppSettings;
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
