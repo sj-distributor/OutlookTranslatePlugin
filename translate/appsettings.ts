@@ -12,6 +12,7 @@ export async function InitialAppSetting() {
   })
     .then((res) => res.json())
     .then((res: AppSettings) => {
+      console.log(res, 123);
       (window as any).appsettings = res;
     });
 }
