@@ -5,7 +5,6 @@ import { ThemeProvider } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import "./taskpane.css";
-import { InitialAppSetting } from "../../appsettings";
 
 /* global document, Office, module, require */
 
@@ -29,9 +28,7 @@ const render = (Component) => {
 /* Render application after Office initializes */
 Office.onReady(() => {
   isOfficeInitialized = true;
-  InitialAppSetting().then(() => {
-    render(App);
-  });
+  render(App);
 });
 
 if ((module as any).hot) {
