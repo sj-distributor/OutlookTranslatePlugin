@@ -1,5 +1,6 @@
 export interface AppSettings {
   serverUrl: string;
+  token: string;
 }
 
 const settings = (window as any).appsettings;

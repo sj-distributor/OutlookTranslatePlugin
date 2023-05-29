@@ -9,6 +9,8 @@ const App = () => {
 
   const settings = (window as any).appsettings as AppSettings;
 
+  console.log(settings, "---settings");
+
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };

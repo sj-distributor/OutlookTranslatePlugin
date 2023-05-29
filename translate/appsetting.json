@@ -1,3 +1,4 @@
 {
-  "serverUrl": "https://injury-api.wiltechs.com"
+  "serverUrl": "https://injury-api.wiltechs.com",
+  "token": ""
 }
