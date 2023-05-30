@@ -10,11 +10,21 @@ export const useAction = () => {
   useEffect(() => {
     // 正文获取
     Office.context.mailbox.item.body.getAsync("html", function callback(result) {
+      console.log(result, "html");
       setContent(result.value);
 
       const clean = clone(result.value);
 
       setCleanContent(clean);
+    });
+
+    Office.context.mailbox.item.body.getAsync("text", function callback(result) {
+      console.log(result, "text");
+      // setContent(result.value);
+
+      // const clean = clone(result.value);
+
+      // setCleanContent(clean);
     });
 
     // console.log(Office.context.mailbox.item.subject);
@@ -28,14 +38,12 @@ export const useAction = () => {
   }, []);
 
   const translateContent = () => {
-    const text = JSON.stringify(cleanContent);
-    console.log(text, "text");
-
-    const data = encodeURIComponent(text);
-
-    console.log(cleanContent, "cleanContent");
-    PostTranslate(data).then((res) => console.log(res, "res"));
+    PostTranslate(cleanContent).then((res) => console.log(res, "res"));
   };
 
-  return { content, setContent, translateContent };
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+
+  return { content, setContent, translateContent, handleChange };
 };
