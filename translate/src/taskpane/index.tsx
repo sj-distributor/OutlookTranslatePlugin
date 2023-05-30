@@ -35,7 +35,9 @@ Office.onReady(async () => {
     down = true;
   });
 
-  down && render(App);
+  console.log(down, "----");
+
+  render(App);
 });
 
 if ((module as any).hot) {
