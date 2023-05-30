@@ -7,12 +7,11 @@ export const useAction = () => {
 
   const [cleanContent, setCleanContent] = useState<string>("");
 
+  const [language, setLanguage] = useState<string>("ch-Tw");
+
   useEffect(() => {
     // 正文获取
     Office.context.mailbox.item.body.getAsync("html", function callback(result) {
-      console.log(result, "html");
-      console.log(JSON.stringify(result.value), "html");
-
       setContent(result.value);
 
       const clean = clone(result.value);
@@ -22,12 +21,12 @@ export const useAction = () => {
   }, []);
 
   const translateContent = () => {
-    PostTranslate(cleanContent).then((res) => console.log(res, "res"));
+    PostTranslate(cleanContent, language).then((res) => setContent(res));
   };
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+    setLanguage(value);
   };
 
-  return { content, setContent, translateContent, handleChange };
+  return { content, setContent, translateContent, handleChange, language };
 };
