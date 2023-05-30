@@ -13,6 +13,7 @@ export async function InitialAppSetting() {
   fetch("./appsetting.json")
     .then((response) => response.json())
     .then((data: AppSettings) => {
+      console.log(data, "data---");
       (window as any).appsettings = data;
     });
 }
