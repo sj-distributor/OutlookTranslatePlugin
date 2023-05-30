@@ -11,30 +11,14 @@ export const useAction = () => {
     // 正文获取
     Office.context.mailbox.item.body.getAsync("html", function callback(result) {
       console.log(result, "html");
+      console.log(JSON.stringify(result.value), "html");
+
       setContent(result.value);
 
       const clean = clone(result.value);
 
-      setCleanContent(clean);
+      setCleanContent(JSON.stringify(clean));
     });
-
-    Office.context.mailbox.item.body.getAsync("text", function callback(result) {
-      console.log(result, "text");
-      // setContent(result.value);
-
-      // const clean = clone(result.value);
-
-      // setCleanContent(clean);
-    });
-
-    // console.log(Office.context.mailbox.item.subject);
-    // // 标题获取
-    // setB(Office.context.mailbox.item.subject);
-
-    // getTranslate();
-
-    // Office.context.mailbox.item.
-    // PostTranslate().then((res) => console.log(res, "res"));
   }, []);
 
   const translateContent = () => {
