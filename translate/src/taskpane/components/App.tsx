@@ -4,28 +4,24 @@ import "../taskpane.css";
 import { Button, Select } from "antd";
 
 const App = () => {
-  const { content, translateContent } = useAction();
-
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
+  const { content, translateContent, handleChange, language } = useAction();
 
   return (
     <div className="w-full h-screen bg-red-300 flex flex-col overflow-auto">
-      <div className="w-full bg-blue-300">
+      <div className="w-full bg-blue-300 flex flex-row">
         <Select
           className="w-full"
-          defaultValue="lucy"
+          value={language}
           onChange={handleChange}
           options={[
-            { value: "jack", label: "Jack" },
-            { value: "lucy", label: "Lucy" },
-            { value: "Yiminghe", label: "yiminghe" },
-            { value: "disabled", label: "Disabled", disabled: true },
+            { value: "zh-TW", label: "zh-TW" },
+            { value: "en", label: "en" },
+            { value: "es", label: "es" },
           ]}
         />
+        <Button onClick={translateContent}>translate</Button>
       </div>
-      <Button onClick={translateContent}>change</Button>
+
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
