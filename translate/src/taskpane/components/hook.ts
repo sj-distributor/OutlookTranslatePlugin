@@ -28,7 +28,8 @@ export const useAction = () => {
   }, []);
 
   const translateContent = () => {
-    PostTranslate(cleanContent).then((res) => console.log(res, "res"));
+    const text = JSON.stringify(cleanContent);
+    PostTranslate(text).then((res) => console.log(res, "res"));
   };
 
   return { content, setContent, translateContent };
