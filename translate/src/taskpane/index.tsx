@@ -13,6 +13,8 @@ initializeIcons();
 
 let isOfficeInitialized = false;
 
+let down = false;
+
 const title = "Contoso Task Pane Add-in";
 
 const render = (Component) => {
@@ -27,11 +29,13 @@ const render = (Component) => {
 };
 
 /* Render application after Office initializes */
-Office.onReady(() => {
+Office.onReady(async () => {
   isOfficeInitialized = true;
-  InitialAppSetting().then(() => {
-    render(App);
+  await InitialAppSetting().then(() => {
+    down = true;
   });
+
+  down && render(App);
 });
 
 if ((module as any).hot) {
