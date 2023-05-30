@@ -85,6 +85,10 @@ module.exports = async (env, options) => {
               }
             },
           },
+          {
+            from: "appsetting.json",
+            to: "appsetting.json",
+          },
         ],
       }),
       new HtmlWebpackPlugin({
