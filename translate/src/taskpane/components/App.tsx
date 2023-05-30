@@ -1,15 +1,10 @@
 import * as React from "react";
 import { useAction } from "./hook";
 import "../taskpane.css";
-import { Select } from "antd";
-import { AppSettings } from "../../../appsettings";
+import { Button, Select } from "antd";
 
 const App = () => {
-  const { content } = useAction();
-
-  const settings = (window as any).appsettings as AppSettings;
-
-  console.log(settings, "---settings");
+  const { content, translateContent } = useAction();
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
@@ -30,6 +25,7 @@ const App = () => {
           ]}
         />
       </div>
+      <Button onClick={translateContent}>change</Button>
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );

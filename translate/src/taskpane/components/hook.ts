@@ -24,8 +24,12 @@ export const useAction = () => {
     // getTranslate();
 
     // Office.context.mailbox.item.
-    PostTranslate().then((res) => console.log(res, "res"));
+    // PostTranslate().then((res) => console.log(res, "res"));
   }, []);
 
-  return { content, setContent };
+  const translateContent = () => {
+    PostTranslate().then((res) => console.log(res, "res"));
+  };
+
+  return { content, setContent, translateContent };
 };
