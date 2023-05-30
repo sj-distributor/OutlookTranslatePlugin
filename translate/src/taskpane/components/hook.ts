@@ -7,7 +7,7 @@ export const useAction = () => {
 
   const [cleanContent, setCleanContent] = useState<string>("");
 
-  const [language, setLanguage] = useState<string>("ch-Tw");
+  const [language, setLanguage] = useState<string>("zh-Tw");
 
   useEffect(() => {
     // 正文获取
