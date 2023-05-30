@@ -28,7 +28,7 @@ export const useAction = () => {
   }, []);
 
   const translateContent = () => {
-    PostTranslate().then((res) => console.log(res, "res"));
+    PostTranslate(cleanContent).then((res) => console.log(res, "res"));
   };
 
   return { content, setContent, translateContent };

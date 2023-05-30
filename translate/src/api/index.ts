@@ -1,13 +1,14 @@
 import { AppSettings } from "../../appsettings";
 
 // /api/Google/translate data: any  JSON.stringify(data)
-export const PostTranslate = () => {
+export const PostTranslate = (content: string) => {
   const settings = (window as any).appsettings as AppSettings;
-  return fetch(`${settings.serverUrl}/api/MetaShower/list`, {
-    method: "get",
-    // body: JSON.stringify({
-    //   page
-    // }),
+  return fetch(`${settings.serverUrl}/api/Google/translate`, {
+    method: "post",
+    body: JSON.stringify({
+      content: content,
+      targetLanguage: "zh-TW",
+    }),
     headers: {
       "X-API-KEY": settings.apiKey,
     },
