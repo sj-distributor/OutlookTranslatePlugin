@@ -28,8 +28,13 @@ export const useAction = () => {
   }, []);
 
   const translateContent = () => {
-    // const text = JSON.stringify(cleanContent);
-    PostTranslate(cleanContent).then((res) => console.log(res, "res"));
+    const text = JSON.stringify(cleanContent);
+    console.log(text, "text");
+
+    const data = encodeURIComponent(text);
+
+    console.log(cleanContent, "cleanContent");
+    PostTranslate(data).then((res) => console.log(res, "res"));
   };
 
   return { content, setContent, translateContent };
