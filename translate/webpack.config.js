@@ -89,6 +89,10 @@ module.exports = async (env, options) => {
             from: "appsetting.json",
             to: "appsetting.json",
           },
+          {
+            from: "appsettings.ts",
+            to: "appsettings.ts",
+          },
         ],
       }),
       new HtmlWebpackPlugin({
