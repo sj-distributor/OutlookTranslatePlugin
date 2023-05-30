@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { clone } from "ramda";
+import { PostTranslate } from "../../api";
 
 export const useAction = () => {
   const [content, setContent] = useState<string>("");
@@ -23,6 +24,7 @@ export const useAction = () => {
     // getTranslate();
 
     // Office.context.mailbox.item.
+    PostTranslate().then((res) => console.log(res, "res"));
   }, []);
 
   return { content, setContent };

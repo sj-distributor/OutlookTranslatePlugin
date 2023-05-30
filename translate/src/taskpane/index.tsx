@@ -27,17 +27,6 @@ const render = (Component) => {
 };
 
 /* Render application after Office initializes */
-// Office.onReady(async () => {
-//   isOfficeInitialized = true;
-//   await InitialAppSetting().then(() => {
-//     down = true;
-//   });
-
-//   console.log(down, "----");
-
-//   render(App);
-// });
-
 Office.onReady(async () => {
   isOfficeInitialized = true;
   await InitialAppSetting();
