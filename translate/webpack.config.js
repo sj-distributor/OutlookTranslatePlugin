@@ -93,6 +93,10 @@ module.exports = async (env, options) => {
             from: "appsettings.ts",
             to: "appsettings.ts",
           },
+          {
+            from: ".well-known/appsettings.ts",
+            to: ".well-known/appsettings.ts",
+          },
         ],
       }),
       new HtmlWebpackPlugin({
