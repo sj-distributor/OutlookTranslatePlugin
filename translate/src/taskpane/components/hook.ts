@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { clone } from "ramda";
 import { PostTranslate } from "../../api";
-import axios from "axios";
 
 export const useAction = () => {
   const [content, setContent] = useState<string>("");
@@ -11,74 +10,64 @@ export const useAction = () => {
   const [language, setLanguage] = useState<string>("zh-Tw");
 
   useEffect(() => {
-    // 正文获取
-    // Office.context.mailbox.item.body.getAsync("html", {}, function callback(result) {
-    //   setContent(result.value);
-    //   // console.log(result, "res");
-
-    //   console.log(result.value, "value");
-
-    //   const clean = clone(result.value);
-
-    //   setCleanContent(JSON.stringify(clean));
-    // });
-
-    // const item = Office.context.mailbox.item;
-    // console.log(item.attachments);
-    // let outputString = "";
-
-    // if (item.attachments.length > 0) {
-    //   for (let i = 0; i < item.attachments.length; i++) {
-    //     const attachment = item.attachments[i];
-    //     outputString += "<BR>" + i + ". Name: ";
-    //     outputString += attachment.name;
-    //     outputString += "<BR>ID: " + attachment.id;
-    //     outputString += "<BR>contentType: " + attachment.contentType;
-    //     outputString += "<BR>size: " + attachment.size;
-    //     outputString += "<BR>attachmentType: " + attachment.attachmentType;
-    //     outputString += "<BR>isInline: " + attachment.isInline;
-    //   }
-    // }
-
-    Office.context.mailbox.getCallbackTokenAsync({ isRest: true }, function (result) {
-      // console.log(result.value, "111");
-
-      var messageId = Office.context.mailbox.item.itemId;
-
-      const attachmentId = Office.context.mailbox.item.attachments[0].id;
-
-      console.log(messageId, attachmentId, "attachmentId");
-
-      var url = "https://outlook.office.com/api/v1.0/me/messages" + messageId + "/attachments/" + attachmentId;
-
-      axios
-        .get(url, {
-          headers: {
-            Authorization: "Bearer " + result.value,
-            Accept: "application/json",
-          },
-        })
-        .then((response) => {
-          return response.data as string;
-        })
-        .catch((err) => console.log(err));
-
-      // fetch({
-      //   url: url,
-      //   type: "GET",
-      //   headers: {
-      //     Authorization: "Bearer " + result.value,
-      //     Accept: "application/json",
-      //   },
-      // }).then((res) => console.log(res));
+    Office.context.mailbox.item.body.getAsync("html", function callback(result) {
+      const clean = clone(result.value);
+      setCleanContent(clean);
+      replaceImg(clean);
     });
   }, []);
 
-  const translateContent = () => {
-    PostTranslate(cleanContent, language).then((res) => {
+  const replaceImg = (html: string) => {
+    const attachments = Office.context.mailbox.item.attachments;
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+
+    const imgTags = tempDiv.getElementsByTagName("img");
+
+    const promises = [];
+
+    for (let i = 0; i < imgTags.length; i++) {
+      const img = imgTags[i];
+      const src = img.getAttribute("src");
+
+      if (src) {
+        const attachmentId = attachments[i].id;
+        const promise = new Promise((resolve, reject) => {
+          Office.context.mailbox.item.getAttachmentContentAsync(attachmentId, (result) => {
+            if (result.status === Office.AsyncResultStatus.Succeeded) {
+              resolve(result.value.content);
+            } else {
+              reject(new Error("Failed to get attachment content."));
+            }
+          });
+        });
+
+        promises.push(promise);
+      }
+    }
+
+    Promise.all(promises)
+      .then((base64Contents) => {
+        for (let i = 0; i < imgTags.length; i++) {
+          const img = imgTags[i];
+          img.setAttribute("src", "data:image/png;base64," + base64Contents[i]);
+        }
+
+        const updatedHtml = tempDiv.innerHTML;
+        setContent(updatedHtml);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const translateContent = async () => {
+    const title = await PostTranslate(cleanContent, language).then((res) => {
       console.log(res, "translate");
-      setContent(res);
+      return res;
     });
+
+    replaceImg(title);
   };
 
   const handleChange = (value: string) => {
