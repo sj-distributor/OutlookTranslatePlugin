@@ -93,6 +93,10 @@ module.exports = async (env, options) => {
             from: "appsettings.ts",
             to: "appsettings.ts",
           },
+          {
+            from: "./.well-known/microsoft-identity-association.json",
+            to: "./.well-known/microsoft-identity-association.json",
+          },
         ],
       }),
       new HtmlWebpackPlugin({

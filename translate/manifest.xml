@@ -27,9 +27,23 @@
       </DesktopSettings>
     </Form>
   </FormSettings>
-  <Permissions>ReadWriteItem</Permissions>
-  <Rule xsi:type="RuleCollection" Mode="Or">
+  <Permissions>ReadWriteMailbox</Permissions>
+  <Permissions>Mail.ReadWrite</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="And">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="ReadOrEdit"/>
+      <Rule xsi:type="RuleCollection" Mode="Or">
+          <Rule xsi:type="ItemHasKnownEntity" 
+              EntityType="PhoneNumber" />
+          <Rule xsi:type="ItemHasKnownEntity" EntityType="Address" />
+          <Rule xsi:type="ItemHasKnownEntity" EntityType="Url" />
+          <Rule xsi:type="ItemHasKnownEntity" 
+              EntityType="MeetingSuggestion" />
+          <Rule xsi:type="ItemHasKnownEntity" 
+              EntityType="TaskSuggestion" />
+          <Rule xsi:type="ItemHasKnownEntity" 
+              EntityType="EmailAddress" />
+          <Rule xsi:type="ItemHasKnownEntity" EntityType="Contact" />
+      </Rule>
   </Rule>
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
