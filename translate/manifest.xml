@@ -28,7 +28,6 @@
     </Form>
   </FormSettings>
   <Permissions>ReadWriteMailbox</Permissions>
-  <Permissions>Mail.ReadWrite</Permissions>
   <Rule xsi:type="RuleCollection" Mode="And">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="ReadOrEdit"/>
       <Rule xsi:type="RuleCollection" Mode="Or">
