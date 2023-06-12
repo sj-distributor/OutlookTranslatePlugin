@@ -144,6 +144,7 @@ export const useAction = () => {
       auth: {
         clientId: "bfe5c2cf-8b6a-4694-aa35-b35c0fc08647",
         authority: "https://login.microsoftonline.com/e62ae085-5adb-4fca-9a94-bed260f0f3f3",
+        redirectUri: "https://outlooktranslate.wiltechs.com/edit.html",
       },
     };
 
