@@ -149,7 +149,7 @@ export const useAction = () => {
 
     const msalInstance = new PublicClientApplication(msalConfig);
 
-    const scopes = ["user.readWrite"];
+    const scopes = ["user.readwrite"];
 
     async function getAccessToken() {
       try {
