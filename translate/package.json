@@ -26,6 +26,7 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.37.1",
     "@fluentui/react": "^8.52.3",
     "antd": "^5.5.1",
     "axios": "^1.4.0",
