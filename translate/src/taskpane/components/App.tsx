@@ -8,7 +8,7 @@ const App = () => {
 
   return (
     <div className="w-full h-screen flex flex-col overflow-auto">
-      <div className="w-full bg-blue-300 flex flex-row">
+      <div className="w-full flex flex-row">
         <Select
           className="w-full"
           value={language}
