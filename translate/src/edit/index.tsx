@@ -30,6 +30,7 @@ const render = (Component) => {
 Office.onReady(async () => {
   isOfficeInitialized = true;
   await InitialAppSetting();
+
   render(App);
 });
 
@@ -39,3 +40,5 @@ if ((module as any).hot) {
     render(NextApp);
   });
 }
+
+// render(App);

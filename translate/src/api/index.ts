@@ -7,6 +7,7 @@ export const PostTranslate = (content: string, language: string) => {
     .post(
       `${settings.serverUrl}/api/Google/translate`,
       {
+        isHtml: true,
         content: content,
         targetLanguage: language,
       },

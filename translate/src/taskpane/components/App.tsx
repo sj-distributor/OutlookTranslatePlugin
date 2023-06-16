@@ -7,7 +7,7 @@ const App = () => {
   const { content, translateContent, handleChange, language } = useAction();
 
   return (
-    <div className="w-full h-screen bg-red-300 flex flex-col overflow-auto">
+    <div className="w-full h-screen flex flex-col overflow-auto">
       <div className="w-full bg-blue-300 flex flex-row">
         <Select
           className="w-full"

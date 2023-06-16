@@ -13,10 +13,13 @@ export const useAction = () => {
     Office.context.mailbox.item.body.getAsync("html", function callback(result) {
       const clean = clone(result.value);
       setCleanContent(clean);
+
       replaceImg(clean);
+      // setContent(result.value);
     });
   }, []);
 
+  // 根据替换图片src路径
   const replaceImg = (html: string) => {
     const attachments = Office.context.mailbox.item.attachments;
     const tempDiv = document.createElement("div");
@@ -55,19 +58,20 @@ export const useAction = () => {
 
         const updatedHtml = tempDiv.innerHTML;
         setContent(updatedHtml);
+        if (tempDiv.parentNode) {
+          tempDiv.parentNode.removeChild(tempDiv);
+        }
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
+  // 把原始html分段截取出需要翻译的text，调接口翻译，替换原始文本
   const translateContent = async () => {
-    const title = await PostTranslate(cleanContent, language).then((res) => {
-      console.log(res, "translate");
-      return res;
+    await PostTranslate(cleanContent, language).then((res) => {
+      replaceImg(res);
     });
-
-    replaceImg(title);
   };
 
   const handleChange = (value: string) => {
