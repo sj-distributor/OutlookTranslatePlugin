@@ -1,13 +1,13 @@
 import { AppSettings } from "../../appsettings";
 import axios from "axios";
 
-export const PostTranslate = (content: string, language: string) => {
+export const PostTranslate = async (content: string, language: string, boolean: boolean = true) => {
   const settings = (window as any).appsettings as AppSettings;
-  return axios
-    .post(
+  try {
+    const response = await axios.post(
       `${settings.serverUrl}/api/Google/translate`,
       {
-        isHtml: true,
+        isHtml: boolean,
         content: content,
         targetLanguage: language,
       },
@@ -16,8 +16,9 @@ export const PostTranslate = (content: string, language: string) => {
           "X-API-KEY": settings.apiKey,
         },
       }
-    )
-    .then((response) => {
-      return response.data as string;
-    });
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
 };

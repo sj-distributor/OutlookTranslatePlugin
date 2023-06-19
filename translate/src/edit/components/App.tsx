@@ -1,40 +1,34 @@
-import { Button } from "antd";
+import { Button, Select } from "antd";
 import * as React from "react";
 import "../edit.css";
 import { useAction } from "./hook";
 
 const App = () => {
-  const { content, type, translate, src, list, s, d, z } = useAction();
+  const { content, language, handleChange, translate } = useAction();
 
   return (
     <div className="w-full">
-      <Button
-        onClick={() => {
-          Office.context.mailbox.item.body.setAsync(content, { coercionType: type }, function callback() {});
-        }}
-      >
-        1
-      </Button>
+      <div className="flex flex-row">
+        <Select
+          className="w-full"
+          value={language}
+          onChange={handleChange}
+          options={[
+            { value: "zh-TW", label: "zh-TW" },
+            { value: "en", label: "en" },
+            { value: "es", label: "es" },
+          ]}
+        />
+        <Button
+          onClick={() => {
+            translate();
+          }}
+        >
+          change
+        </Button>
+      </div>
 
-      <Button onClick={translate}>2</Button>
-
-      {/* <div dangerouslySetInnerHTML={{ __html: content }} /> */}
-      <div>{content}</div>
-
-      {/* {list.map((item, index) => (
-        <img src={item} alt={`${index}`} key={index} />
-      ))} */}
-
-      {/* {s.map((item, index) => (
-        <div key={index}>{item}</div>
-      ))} */}
-      {d.map((item, index) => (
-        <div key={index}>{item.name}</div>
-      ))}
-
-      {z.map((item, index) => (
-        <div key={index}>{item}</div>
-      ))}
+      <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 };

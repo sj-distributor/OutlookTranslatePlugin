@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { PostTranslate } from "../../api";
-import { message } from "antd";
 
 export const useAction = () => {
   const [content, setContent] = useState<string>("");
 
   useEffect(() => {
-    Office.context.mailbox.item.body.getAsync("html", function callback(result) {
+    Office.context.mailbox.item.body.getAsync("html", async function callback(result) {
       if (result.status === Office.AsyncResultStatus.Succeeded) {
-        PostTranslate(result.value, "zh-TW").then((res) => {
+        const res = await PostTranslate(result.value, "zh-TW");
+        if (res.msg) {
+          replaceImg(result.value);
+        } else {
           replaceImg(res);
-        });
+        }
       }
     });
   }, []);
@@ -32,7 +34,6 @@ export const useAction = () => {
         const img = imgTags[i];
         const src = img.getAttribute("src");
         if (src) {
-          message.info(attachments.length);
           const attachmentId = attachments[i]?.id;
           const promise = new Promise((resolve, reject) => {
             Office.context.mailbox.item.getAttachmentContentAsync(attachmentId, (result) => {
