@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { enc, SHA256 } from "crypto-js";
 import axios from "axios";
 import { message } from "antd";
 import { PostTranslate } from "../../api";
@@ -890,7 +889,6 @@ export const useAction = () => {
             const translatedContent = await PostTranslate(change, language, isHTML(change));
             pElements[i].innerHTML = translatedContent;
           } catch (error) {
-            console.error("Translation failed:", error);
             message.error(1);
           }
         }
