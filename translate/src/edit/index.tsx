@@ -40,5 +40,3 @@ if ((module as any).hot) {
     render(NextApp);
   });
 }
-
-// render(App);
