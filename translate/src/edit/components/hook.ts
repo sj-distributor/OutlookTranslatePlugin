@@ -399,38 +399,3 @@ export const useAction = () => {
 
   return { content, setContent, input, setInput, html, setHtml, showContent, editor, setEditor, isLoading };
 };
-
-// 微软 SSO登录
-// const getIdToken = async () => {
-//   try {
-//     const userTokenEncoded = await Office.auth.getAccessToken({
-//       allowSignInPrompt: true,
-//       allowConsentPrompt: true,
-//     });
-
-//     message.success(userTokenEncoded);
-//     // setContent(userTokenEncoded);
-
-//     try {
-//       await postToken(userTokenEncoded).then((res) => {
-//         message.success(res.data.access_token);
-//         getSuccessToken(res.data.access_token);
-
-//         Office.context.mailbox.item.getItemIdAsync(async (res) => {
-//           if (res.status === Office.AsyncResultStatus.Succeeded) {
-//             message.success(res.value);
-//           }
-//         });
-//       });
-//     } catch (error) {
-//       message.info(error.message);
-//     }
-
-//     // Office.context.mailbox.item.getItemIdAsync(async (res) => {
-//     //   if (res.status === Office.AsyncResultStatus.Succeeded) {
-//     //   }
-//     // });
-//   } catch (error) {
-//     getRealImg();
-//   }
-// };
