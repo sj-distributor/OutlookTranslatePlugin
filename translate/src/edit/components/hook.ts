@@ -10,18 +10,6 @@ enum ApiType {
   Rest,
 }
 
-enum Language {
-  Chinese,
-  English,
-  Spanish,
-}
-
-const LanguageType = {
-  [Language.Chinese]: "zh-TW",
-  [Language.English]: "en",
-  [Language.Spanish]: "es",
-};
-
 const baseHtml =
   "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /><meta name='ProgId' content='Word.Document'><meta name='Generator' content='Microsoft Word 15'><meta name='Originator' content='Microsoft Word 15'></head><body><div class='WordSection1'></div></body></html>";
 
