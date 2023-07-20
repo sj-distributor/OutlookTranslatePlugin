@@ -30,7 +30,7 @@ export const useAction = () => {
 
   const [isOk, setIsOk] = useState<boolean>(false);
 
-  const debouncedValue = useDebounce(html, { wait: 500 });
+  const debouncedValue = useDebounce(html, { wait: 1000 });
 
   const [language, setLanguage] = useState<string>("");
 
