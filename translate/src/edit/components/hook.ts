@@ -10,18 +10,6 @@ enum ApiType {
   Rest,
 }
 
-enum Language {
-  Chinese,
-  English,
-  Spanish,
-}
-
-const LanguageType = {
-  [Language.Chinese]: "zh-TW",
-  [Language.English]: "en",
-  [Language.Spanish]: "es",
-};
-
 const baseHtml =
   "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /><meta name='ProgId' content='Word.Document'><meta name='Generator' content='Microsoft Word 15'><meta name='Originator' content='Microsoft Word 15'></head><body><div class='WordSection1'></div></body></html>";
 
@@ -42,7 +30,7 @@ export const useAction = () => {
 
   const [isOk, setIsOk] = useState<boolean>(false);
 
-  const debouncedValue = useDebounce(html, { wait: 500 });
+  const debouncedValue = useDebounce(html, { wait: 1000 });
 
   const [language, setLanguage] = useState<string>("");
 
@@ -103,9 +91,26 @@ export const useAction = () => {
     });
   };
 
+  const removeSpanWithImg = (spanElements: NodeListOf<HTMLSpanElement>) => {
+    for (let i = spanElements.length - 1; i >= 0; i--) {
+      const spanElement = spanElements[i];
+      const children = Array.from(spanElement.children);
+      const imgElement = children.find((child) => child.tagName === "IMG");
+
+      if (imgElement) {
+        // Replace <span> with its children
+        while (spanElement.firstChild) {
+          spanElement.parentNode.insertBefore(spanElement.firstChild, spanElement);
+        }
+
+        // Remove the empty <span> tag
+        spanElement.parentNode.removeChild(spanElement);
+      }
+    }
+  };
+
   // 清洗 html
   const getCleanHtml = async (type: ApiType, html: string, isNew: boolean, id?: string, token?: string) => {
-    console.log(type, id, token);
     let parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
     const wordSection1Div = doc.querySelector(".WordSection1");
@@ -177,22 +182,7 @@ export const useAction = () => {
     if (isNew) {
       pElements.forEach((item) => {
         const spanElements = item.querySelectorAll("span");
-
-        for (let i = 0; i < spanElements.length; i++) {
-          const spanElement = spanElements[i];
-          const imgElements = spanElement.querySelectorAll("img");
-
-          if (imgElements.length > 0) {
-            // 将img标签移到span标签前面
-            for (let j = 0; j < imgElements.length; j++) {
-              const imgElement = imgElements[j];
-              spanElement.parentNode.insertBefore(imgElement, spanElement);
-            }
-
-            // 移除span标签
-            spanElement.parentNode.removeChild(spanElement);
-          }
-        }
+        removeSpanWithImg(spanElements);
       });
     } else {
       let hasMailOriginalLink = false;
@@ -213,22 +203,7 @@ export const useAction = () => {
             break; // 终止循环
           }
           const spanElements = item.querySelectorAll("span");
-
-          for (let i = 0; i < spanElements.length; i++) {
-            const spanElement = spanElements[i];
-            const imgElements = spanElement.querySelectorAll("img");
-
-            if (imgElements.length > 0) {
-              // 将img标签移到span标签前面
-              for (let j = 0; j < imgElements.length; j++) {
-                const imgElement = imgElements[j];
-                spanElement.parentNode.insertBefore(imgElement, spanElement);
-              }
-
-              // 移除span标签
-              spanElement.parentNode.removeChild(spanElement);
-            }
-          }
+          removeSpanWithImg(spanElements);
         }
       } else {
         // 基础html标签
@@ -341,10 +316,9 @@ export const useAction = () => {
       for (let i = segments.length - 1; i >= 0; i--) {
         const newParagraph = doc.createElement("p");
         newParagraph.setAttribute("class", "MsoNormal");
-        newParagraph.innerHTML = await translate(
-          segments[i].replace(/<p[^>]*>|<\/p>/g, "").replace(/"/g, "'"),
-          isHTMLValid(segments[i].replace(/<p[^>]*>|<\/p>/g, "").replace(/"/g, "'"))
-        );
+        const html = segments[i].replace(/<p[^>]*>|<\/p>/g, "").replace(/"/g, "'");
+
+        newParagraph.innerHTML = await translate(html, isHTMLValid(html));
         wordSection1Div.insertBefore(newParagraph, wordSection1Div.firstChild);
       }
     } else {
@@ -355,10 +329,9 @@ export const useAction = () => {
       for (let i = 0; i < segments.length; i++) {
         const newParagraph = doc.createElement("p");
         newParagraph.setAttribute("class", "MsoNormal");
-        newParagraph.innerHTML = await translate(
-          segments[i].replace(/<p[^>]*>|<\/p>/g, "").replace(/"/g, "'"),
-          isHTMLValid(segments[i].replace(/<p[^>]*>|<\/p>/g, "").replace(/"/g, "'"))
-        );
+        const html = segments[i].replace(/<p[^>]*>|<\/p>/g, "").replace(/"/g, "'");
+
+        newParagraph.innerHTML = await translate(html, isHTMLValid(html));
         wordSection1Div.appendChild(newParagraph);
       }
     }
@@ -377,7 +350,7 @@ export const useAction = () => {
   };
 
   const translate = async (html: string, isHtml: boolean) => {
-    const res = await PostTranslate(html, "zh-TW", isHtml);
+    const res = await PostTranslate(html, "en", isHtml);
     if (res.msg) {
       return html;
     }
@@ -386,7 +359,7 @@ export const useAction = () => {
   };
 
   const isHTMLValid = (htmlText: string) => {
-    var tagRegex = /<([a-z]+\d*)[\s\S]*>[\s\S]*?<\/\1>/gi;
+    var tagRegex = /<[^>]*>/;
     return tagRegex.test(htmlText);
   };
 
