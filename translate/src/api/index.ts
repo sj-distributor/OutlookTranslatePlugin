@@ -59,9 +59,7 @@ export const PostAttachmentUpload = async (data: FormData) => {
         "X-API-KEY": settings.apiKey,
       },
     })
-    .then((res) => {
-      return res.data;
-    })
+    .then((res) => res.data)
     .catch(() => {
       throw new Error("Network request failed");
     });
